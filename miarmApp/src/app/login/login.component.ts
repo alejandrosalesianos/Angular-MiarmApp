@@ -1,5 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { LoginDto } from '../models/dto/login.dto';
 import { AuthService } from '../services/auth.service';
 
@@ -17,15 +19,19 @@ export class LoginComponent implements OnInit {
     password: new FormControl(''),
   })
 
-  constructor(private loginService: AuthService) { }
+  constructor(private loginService: AuthService,private route:Router) { }
 
   ngOnInit(): void {
   }
 
+  navigate(){
+    this.route.navigate(['/posts']);
+  }
+
   doLogin() {
     this.loginService.login(this.loginDto).subscribe(result => {
-      alert(`te has logueado y tu token es: ${result.token}`)
       localStorage.setItem('token',result.token);
+      this.navigate();
     })
   }
 
